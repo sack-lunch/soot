@@ -147,6 +147,10 @@
 	icon_state = "wood_large-broken3"
 	},
 /area/space)
+"jz" = (
+/obj/effect/landmark/observer_start,
+/turf/open/floor/plating/ashplanet/rocky,
+/area/space)
 "jA" = (
 /obj/structure/chair/comfy/brown{
 	dir = 8
@@ -2929,7 +2933,7 @@ wR
 wR
 Et
 ly
-Et
+jz
 Et
 Et
 Et
@@ -3879,7 +3883,7 @@ tT
 tT
 Fc
 ZX
-Ix
+Ba
 vQ
 kD
 kD
