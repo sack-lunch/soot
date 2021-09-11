@@ -1,0 +1,36 @@
+"a" = (/turf/template_noop,/area/template_noop)
+"b" = (/obj/item/clothing/suit/hazardvest{desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks."; name = "emergency lifejacket"},/obj/item/clothing/suit/hazardvest{desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks."; name = "emergency lifejacket"},/obj/item/clothing/suit/hazardvest{desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks."; name = "emergency lifejacket"},/obj/item/clothing/suit/hazardvest{desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks."; name = "emergency lifejacket"},/obj/item/clothing/suit/hazardvest{desc = "A high-visibility lifejacket complete with whistle and slot for oxygen tanks."; name = "emergency lifejacket"},/obj/item/tank/internals/emergency_oxygen{pixel_x = 3},/obj/item/tank/internals/emergency_oxygen{pixel_x = 3},/obj/item/tank/internals/emergency_oxygen{pixel_x = 3},/obj/item/tank/internals/emergency_oxygen{pixel_x = 3},/obj/item/tank/internals/emergency_oxygen{pixel_x = 3},/obj/item/clothing/mask/breath{pixel_x = -3; pixel_y = -3},/obj/item/clothing/mask/breath{pixel_x = -3; pixel_y = -3},/obj/item/clothing/mask/breath{pixel_x = -3; pixel_y = -3},/obj/item/clothing/mask/breath{pixel_x = -3; pixel_y = -3},/obj/item/clothing/mask/breath{pixel_x = -3; pixel_y = -3},/obj/item/clothing/head/hardhat/orange{name = "protective hat"; pixel_y = 9},/obj/item/clothing/head/hardhat/orange{name = "protective hat"; pixel_y = 9},/obj/item/clothing/head/hardhat/orange{name = "protective hat"; pixel_y = 9},/obj/item/clothing/head/hardhat/orange{name = "protective hat"; pixel_y = 9},/obj/item/clothing/head/hardhat/orange{name = "protective hat"; pixel_y = 9},/obj/structure/closet/crate/internals,/obj/effect/turf_decal/bot,/turf/open/floor/iron/white,/area/shuttle/arrival)
+"d" = (/obj/docking_port/mobile/arrivals{dir = 1; name = "Pipstation Arrivals Shuttle"},/obj/structure/chair/comfy/shuttle{dir = 1},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"f" = (/obj/structure/chair/comfy/shuttle{dir = 1},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"i" = (/obj/machinery/requests_console{department = "Arrival shuttle"; name = "Arrivals Shuttle console"},/turf/closed/wall/mineral/titanium,/area/shuttle/arrival)
+"l" = (/obj/structure/table/reinforced,/obj/item/storage/toolbox/emergency,/turf/open/floor/iron/white,/area/shuttle/arrival)
+"r" = (/obj/structure/table/reinforced,/obj/item/storage/secure/briefcase,/obj/item/storage/briefcase{pixel_x = 3; pixel_y = 3},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"t" = (/obj/structure/table/reinforced,/obj/item/paper_bin,/obj/item/pen,/turf/open/floor/iron/white,/area/shuttle/arrival)
+"u" = (/turf/open/floor/iron/white,/area/shuttle/arrival)
+"w" = (/obj/machinery/vending/wallmed/directional/north{use_power = 0},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"z" = (/obj/structure/shuttle/engine/propulsion,/turf/open/floor/plating,/area/shuttle/arrival)
+"G" = (/obj/item/storage/firstaid/regular,/obj/structure/table/reinforced,/obj/item/storage/firstaid/regular{pixel_x = 3; pixel_y = 3},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"K" = (/obj/machinery/door/airlock/shuttle{name = "Arrival Shuttle Airlock"},/turf/open/floor/mineral/titanium/white,/area/shuttle/arrival)
+"L" = (/turf/closed/wall/mineral/titanium,/area/shuttle/arrival)
+"T" = (/obj/machinery/computer{name = "Shuttle computer"},/turf/open/floor/iron/white,/area/shuttle/arrival)
+"U" = (/obj/effect/spawner/structure/window/shuttle,/turf/open/floor/plating,/area/shuttle/arrival)
+"Y" = (/obj/structure/shuttle/engine/heater,/turf/open/floor/plating,/area/shuttle/arrival)
+"Z" = (/obj/machinery/door/airlock/shuttle{name = "Arrival Shuttle Airlock"},/turf/open/floor/iron/white,/area/shuttle/arrival)
+
+(1,1,1) = {"
+aaaaaLUUULaaaaa
+aaaLLLTTTLLLaaa
+aaLLuuuuuuuLLaa
+aLLLLLiZLLLLLLa
+aLtrbuuuwublGLa
+LLuufffffffuuLL
+KuuuuuuuuuuuuuK
+UufffffdfffffuU
+KuuuuuuuuuuuuuK
+LLufffffffffuLL
+aLuuuuuuuuuuuLa
+aLLuufffffuuLLa
+aaLLuuuuuuuLLaa
+aaYLLLuuuLLLYaa
+aazzzLUUULzzzaa
+"}
