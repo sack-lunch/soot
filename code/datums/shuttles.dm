@@ -582,6 +582,10 @@
 	suffix = "box"
 	name = "labour shuttle (Box)"
 
+/datum/map_template/shuttle/labour/pipstation
+	suffix = "pipstation"
+	name = "labour shuttle (Pip)"
+
 /datum/map_template/shuttle/arrival/donut
 	suffix = "donut"
 	name = "arrival shuttle (Donut)"
