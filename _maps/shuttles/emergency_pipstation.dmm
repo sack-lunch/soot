@@ -23,9 +23,9 @@
 "xD" = (/turf/open/floor/wood,/area/shuttle/escape/brig)
 "yk" = (/obj/machinery/door/airlock/security/glass{name = "Holding Area"; req_access_txt = "2"},/turf/open/floor/wood,/area/shuttle/escape/brig)
 "yw" = (/obj/structure/chair/comfy/shuttle{dir = 4},/turf/open/floor/glass/reinforced,/area/shuttle/escape)
+"Ac" = (/obj/machinery/stasis,/obj/machinery/defibrillator_mount/loaded/directional/north,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Av" = (/obj/structure/tank_dispenser/oxygen,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "AG" = (/obj/structure/chair/comfy/shuttle,/turf/open/floor/wood,/area/shuttle/escape/brig)
-"AK" = (/obj/structure/table/reinforced,/obj/item/storage/backpack/duffelbag/med/surgery,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "BX" = (/obj/machinery/stasis,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Cv" = (/obj/structure/shuttle/engine/huge,/turf/template_noop,/area/shuttle/escape)
 "Eg" = (/obj/machinery/computer/security,/turf/open/floor/wood,/area/shuttle/escape)
@@ -37,7 +37,6 @@
 "Ih" = (/obj/structure/window/shuttle,/turf/open/floor/plating,/area/shuttle/escape)
 "Jn" = (/obj/machinery/door/airlock/external{name = "Emergency Recovery Airlock"},/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Mb" = (/turf/closed/wall/mineral/titanium,/area/shuttle/escape)
-"Mc" = (/obj/machinery/stasis,/obj/machinery/defibrillator_mount/loaded/directional/north,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Mr" = (/obj/structure/table/reinforced,/obj/item/tank/jetpack/carbondioxide{pixel_x = 7; pixel_y = -7},/obj/item/tank/jetpack/carbondioxide,/obj/item/tank/jetpack/carbondioxide{pixel_x = -7; pixel_y = 7},/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "MY" = (/obj/structure/chair/office{dir = 1},/turf/open/floor/wood,/area/shuttle/escape)
 "PM" = (/obj/structure/table/wood,/turf/open/floor/wood,/area/shuttle/escape/brig)
@@ -53,6 +52,7 @@
 "UP" = (/obj/machinery/door/airlock/medical/glass{name = "Escape Shuttle Infirmary"},/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "VL" = (/obj/structure/closet/firecloset,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Wb" = (/obj/machinery/computer/station_alert,/turf/open/floor/wood,/area/shuttle/escape)
+"Xc" = (/obj/structure/table/reinforced,/obj/item/storage/backpack/duffelbag/med/surgery,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Xn" = (/obj/structure/closet/emcloset,/turf/open/floor/mineral/titanium/white,/area/shuttle/escape)
 "Xy" = (/turf/open/floor/wood,/area/shuttle/escape)
 
@@ -78,10 +78,10 @@ MbMbXyhWMbywXyhWMbywXyhWMbywXyhWMbywXyhWMbywXyhWMbywXyMbMb
 smMbXyXyQgXyXyXyQgXyXyXyQgXyXyXyQgXyXyXyQgXyXyXyQgXyXyMbsm
 smMbXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyXyMbsm
 smMbMbMbMbTGMbMbMbMbMbMbMbMbUPMbMbMbMbMbMbMbMbTGMbMbMbMbsm
-smsmMbTTaSaSaSaSMbMbMcBXekekekekekBXMcMbMbaSaSaSaSTTMbsmsm
+smsmMbTTaSaSaSaSMbMbAcBXekekekekekBXAcMbMbaSaSaSaSTTMbsmsm
 smMbMbTTaSaSiMMbMbBXekekekekekekekekekBXMbMbiMaSaSTTMbMbsm
 MbMbELaSaSUxMbMbBXekekekRZeIekukRZekekekBXMbMbUxaSaSELMbMb
-MbIhIhIhIhIhMbMbBXekekekekAKekAKekekekekBXMbMbIhIhIhIhIhMb
+MbIhIhIhIhIhMbMbBXekekekekXcekXcekekekekBXMbMbIhIhIhIhIhMb
 aSaSaSaSaSaSaSMbBXekekekRZeIekukRZekekekBXMbaSaSaSaSaSaSaS
 RwlWaSaSaSRwlWIhIhBXBXekekekekekekekBXBXIhIhRwlWaSaSaSRwlW
 smsmCvlWlWsmsmsmIhIhIhIhvvvvFjvvvvIhIhIhIhsmsmsmCvlWlWsmsm

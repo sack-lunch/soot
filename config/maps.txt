@@ -44,3 +44,8 @@ endmap
 
 map multiz_debug
 endmap
+
+map pipstation
+	minplayers 30
+	votable
+endmap
