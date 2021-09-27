@@ -66,7 +66,10 @@
 	icon = 'icons/obj/crypt.dmi' 
 	icon_state = "angel"
 	name = "angel statue"
-	desc = "placeholderplease change"
+	desc = "You can imagine at one point this statue was quite the sight to behold"
+	flags_1 = NODECONSTRUCT_1
+	anchored = TRUE
+	resistance_flags = INDESTRUCTIBLE
 ////////////////////////uranium///////////////////////////////////
 
 /obj/structure/statue/uranium
