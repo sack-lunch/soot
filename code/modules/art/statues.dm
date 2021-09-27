@@ -59,7 +59,14 @@
 				new custom_material.sheet_type(drop_location(),amount)
 	qdel(src)
 
+
+
 //////////////////////////////////////STATUES/////////////////////////////////////////////////////////////
+/obj/structure/statue/angelstatue
+	icon = 'icons/obj/crypt.dmi' 
+	icon_state = "angel"
+	name = "angel statue"
+	desc = "placeholderplease change"
 ////////////////////////uranium///////////////////////////////////
 
 /obj/structure/statue/uranium
