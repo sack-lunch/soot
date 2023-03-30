@@ -55,6 +55,7 @@
 	name = "pack of bungo tree seeds"
 	desc = "These seeds grow into bungo trees. They appear to be heavy and almost perfectly spherical."
 	icon_state = "seed-bungotree"
+	plant_icon_offset = 4
 	species = "bungotree"
 	plantname = "Bungo Tree"
 	product = /obj/item/food/grown/bungofruit
@@ -96,7 +97,7 @@
 	foodtypes = TOXIC
 	tastes = list("acrid bitterness" = 1)
 
-/obj/item/food/grown/bungopit/Initialize()
+/obj/item/food/grown/bungopit/Initialize(mapload)
 	. =..()
 	reagents.clear_reagents()
 	reagents.add_reagent(/datum/reagent/toxin/bungotoxin, seed.potency * 0.10) //More than this will kill at too low potency

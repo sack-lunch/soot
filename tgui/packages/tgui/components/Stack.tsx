@@ -6,7 +6,6 @@
 
 import { classes } from 'common/react';
 import { RefObject } from 'inferno';
-import { computeBoxClassName, computeBoxProps } from './Box';
 import { computeFlexClassName, computeFlexItemClassName, computeFlexItemProps, computeFlexProps, FlexItemProps, FlexProps } from './Flex';
 
 type StackProps = FlexProps & {
@@ -21,23 +20,20 @@ export const Stack = (props: StackProps) => {
       className={classes([
         'Stack',
         fill && 'Stack--fill',
-        vertical
-          ? 'Stack--vertical'
-          : 'Stack--horizontal',
+        vertical ? 'Stack--vertical' : 'Stack--horizontal',
         className,
         computeFlexClassName(props),
-        computeBoxClassName(props),
       ])}
-      {...computeBoxProps(computeFlexProps({
+      {...computeFlexProps({
         direction: vertical ? 'column' : 'row',
         ...rest,
-      }))}
+      })}
     />
   );
 };
 
 type StackItemProps = FlexProps & {
-  innerRef?: RefObject<HTMLDivElement>,
+  innerRef?: RefObject<HTMLDivElement>;
 };
 
 const StackItem = (props: StackItemProps) => {
@@ -48,10 +44,9 @@ const StackItem = (props: StackItemProps) => {
         'Stack__item',
         className,
         computeFlexItemClassName(rest),
-        computeBoxClassName(rest),
       ])}
       ref={innerRef}
-      {...computeBoxProps(computeFlexItemProps(rest))}
+      {...computeFlexItemProps(rest)}
     />
   );
 };
@@ -72,9 +67,8 @@ const StackDivider = (props: StackDividerProps) => {
         hidden && 'Stack__divider--hidden',
         className,
         computeFlexItemClassName(rest),
-        computeBoxClassName(rest),
       ])}
-      {...computeBoxProps(computeFlexItemProps(rest))}
+      {...computeFlexItemProps(rest)}
     />
   );
 };

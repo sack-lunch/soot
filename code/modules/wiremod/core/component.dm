@@ -12,9 +12,14 @@
 	icon = 'icons/obj/module.dmi'
 	icon_state = "component"
 	inhand_icon_state = "electronic"
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 	/// The name of the component shown on the UI
 	var/display_name = "Generic"
+
+	/// The category of the component in the UI
+	var/category = COMPONENT_DEFAULT_CATEGORY
 
 	/// The colour this circuit component appears in the UI
 	var/ui_color = "blue"
@@ -45,11 +50,17 @@
 	/// The power usage whenever this component receives an input
 	var/power_usage_per_input = 1
 
-	// Whether the component is removable or not. Only affects user UI
+	/// Whether the component is removable or not. Only affects user UI
 	var/removable = TRUE
 
-	// Defines which shells support this component. Only used as an informational guide, does not restrict placing these components in circuits.
+	/// Defines which shells support this component. Only used as an informational guide, does not restrict placing these components in circuits.
 	var/required_shells = null
+
+	/// Determines the amount of space this circuit occupies in an integrated circuit.
+	var/circuit_size = 1
+
+	/// The UI buttons of this circuit component. An assoc list that has this format: "button_icon" = "action_name"
+	var/ui_buttons = null
 
 /// Called when the option ports should be set up
 /obj/item/circuit_component/proc/populate_options()
@@ -60,22 +71,21 @@
 	return
 
 /// Extension of add_input_port. Simplifies the code to make an option port to reduce boilerplate
-/obj/item/circuit_component/proc/add_option_port(name, list/list_to_use, order = 0, trigger = .proc/input_received)
+/obj/item/circuit_component/proc/add_option_port(name, list/list_to_use, order = 0, trigger = PROC_REF(input_received))
 	return add_input_port(name, PORT_TYPE_OPTION, order = order, trigger = trigger, port_type = /datum/port/input/option, extra_args = list("possible_options" = list_to_use))
 
-/obj/item/circuit_component/Initialize()
+/obj/item/circuit_component/Initialize(mapload)
 	. = ..()
 	if(name == COMPONENT_DEFAULT_NAME)
 		name = "[lowertext(display_name)] [COMPONENT_DEFAULT_NAME]"
 	populate_options()
 	populate_ports()
-	if(circuit_flags & CIRCUIT_FLAG_INPUT_SIGNAL)
+	if((circuit_flags & CIRCUIT_FLAG_INPUT_SIGNAL) && !trigger_input)
 		trigger_input = add_input_port("Trigger", PORT_TYPE_SIGNAL, order = 2)
-	if(circuit_flags & CIRCUIT_FLAG_OUTPUT_SIGNAL)
+	if((circuit_flags & CIRCUIT_FLAG_OUTPUT_SIGNAL) && !trigger_output)
 		trigger_output = add_output_port("Triggered", PORT_TYPE_SIGNAL, order = 2)
 	if(circuit_flags & CIRCUIT_FLAG_INSTANT)
 		ui_color = "orange"
-
 
 /obj/item/circuit_component/Destroy()
 	if(parent)
@@ -90,6 +100,16 @@
 	QDEL_LIST(output_ports)
 	QDEL_LIST(input_ports)
 	return ..()
+
+/obj/item/circuit_component/drop_location()
+	if(parent?.shell)
+		return parent.shell.drop_location()
+	return ..()
+
+/obj/item/circuit_component/examine(mob/user)
+	. = ..()
+	if(circuit_flags & CIRCUIT_FLAG_REFUSE_MODULE)
+		. += span_notice("It's incompatible with module components.")
 
 /**
  * Called when a shell is registered from the component/the component is added to a circuit.
@@ -131,14 +151,14 @@
  * * type - The datatype it handles
  * * trigger - Whether this input port triggers an update on the component when updated.
  */
-/obj/item/circuit_component/proc/add_input_port(name, type, order = 1, trigger = .proc/input_received, default = null, port_type = /datum/port/input, extra_args = null)
+/obj/item/circuit_component/proc/add_input_port(name, type, order = 1, trigger = PROC_REF(input_received), default = null, port_type = /datum/port/input, extra_args = null)
 	var/list/arguments = list(src)
 	arguments += args
 	if(extra_args)
 		arguments += extra_args
 	var/datum/port/input/input_port = new port_type(arglist(arguments))
 	input_ports += input_port
-	sortTim(input_ports, /proc/cmp_port_order_asc)
+	sortTim(input_ports, GLOBAL_PROC_REF(cmp_port_order_asc))
 	if(parent)
 		SStgui.update_uis(parent)
 	return input_port
@@ -167,7 +187,9 @@
 	arguments += args
 	var/datum/port/output/output_port = new(arglist(arguments))
 	output_ports += output_port
-	sortTim(output_ports, /proc/cmp_port_order_asc)
+	sortTim(output_ports, GLOBAL_PROC_REF(cmp_port_order_asc))
+	if(parent)
+		SStgui.update_uis(parent)
 	return output_port
 
 /**
@@ -213,6 +235,14 @@
 		trigger_output.set_output(COMPONENT_SIGNAL)
 	return TRUE
 
+/obj/item/circuit_component/proc/set_circuit_size(new_size)
+	if(parent)
+		parent.current_size -= circuit_size
+
+	circuit_size = new_size
+
+	if(parent)
+		parent.current_size += circuit_size
 
 /**
  * Called whether this circuit component should receive an input.
@@ -234,14 +264,26 @@
 			message_admins("[display_name] tried to execute on [parent.get_creator_admin()] that has admin_only set to 0")
 			return FALSE
 
-		var/obj/item/stock_parts/cell/cell = parent.get_cell()
-		if(!cell?.use(power_usage_per_input))
-			return FALSE
+		var/flags = SEND_SIGNAL(parent, COMSIG_CIRCUIT_PRE_POWER_USAGE, power_usage_per_input)
+		if(!(flags & COMPONENT_OVERRIDE_POWER_USAGE))
+			var/obj/item/stock_parts/cell/cell = parent.get_cell()
+			if(!cell?.use(power_usage_per_input))
+				return FALSE
 
-	if((circuit_flags & CIRCUIT_FLAG_INPUT_SIGNAL) && !COMPONENT_TRIGGERED_BY(trigger_input, port))
+	if((!port || port.trigger == PROC_REF(input_received)) && (circuit_flags & CIRCUIT_FLAG_INPUT_SIGNAL) && !COMPONENT_TRIGGERED_BY(trigger_input, port))
 		return FALSE
 
 	return TRUE
+
+/// Called when trying to get the physical location of this object
+/obj/item/circuit_component/proc/get_location()
+	return get_turf(src) || get_turf(parent?.shell)
+
+/obj/item/circuit_component/balloon_alert(mob/viewer, text)
+	if(parent)
+		return parent.balloon_alert(viewer, text)
+	return ..()
+
 
 /// Called before input_received and should_receive_input. Used to perform behaviour that shouldn't care whether the input should be received or not.
 /obj/item/circuit_component/proc/pre_input_received(datum/port/input/port)
@@ -262,10 +304,13 @@
 
 /// Called when this component is about to be added to an integrated_circuit.
 /obj/item/circuit_component/proc/add_to(obj/item/integrated_circuit/added_to)
+	if(circuit_flags & CIRCUIT_FLAG_ADMIN)
+		ADD_TRAIT(added_to, TRAIT_CIRCUIT_UNDUPABLE, REF(src))
 	return TRUE
 
 /// Called when this component is removed from an integrated_circuit.
 /obj/item/circuit_component/proc/removed_from(obj/item/integrated_circuit/removed_from)
+	REMOVE_TRAIT(removed_from, TRAIT_CIRCUIT_UNDUPABLE, REF(src))
 	return
 
 /**
@@ -296,6 +341,16 @@
 		. += create_ui_notice("Power Usage Per Input: [power_usage_per_input]", "orange", "bolt")
 
 /**
+ * Called when a special button is pressed on this component in the UI.
+ *
+ * Arguments:
+ * * user - Interacting mob
+ * * action - A string for which action is being performed. No parameters passed because it's only a button press.
+ */
+/obj/item/circuit_component/proc/ui_perform_action(mob/user, action)
+	return
+
+/**
  * Creates a UI notice entry to be used in get_ui_notices()
  *
  * Returns a list that can then be added to the return list in get_ui_notices()
@@ -309,21 +364,26 @@
 		"color" = color,
 	))
 
+/obj/item/circuit_component/ui_host(mob/user)
+	if(parent)
+		return parent.ui_host()
+	return ..()
+
 /**
  * Creates a table UI notice entry to be used in get_ui_notices()
  *
  * Returns a list that can then be added to the return list in get_ui_notices()
  * Used by components to list their available columns. Recommended to use at the end of get_ui_notices()
  */
-/obj/item/circuit_component/proc/create_table_notices(list/entries)
+/obj/item/circuit_component/proc/create_table_notices(list/entries, column_name = "Column", column_name_plural = "Columns")
 	SHOULD_BE_PURE(TRUE)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	. = list()
-	. += create_ui_notice("Available Columns:", "grey", "question-circle")
+	. += create_ui_notice("Available [column_name_plural]:", "grey", "question-circle")
 
 
 	for(var/entry in entries)
-		. += create_ui_notice("Column Name: '[entry]'", "grey", "columns")
+		. += create_ui_notice("[column_name] Name: '[entry]'", "grey", "columns")
 
 /**
  * Called when a circuit component is added to an object with a USB port.

@@ -3,8 +3,8 @@
 	var/tainted = FALSE
 
 	action_delegations = list(
-		"give_quirk" = .proc/give_quirk,
-		"remove_quirk" = .proc/remove_quirk,
+		"give_quirk" = PROC_REF(give_quirk),
+		"remove_quirk" = PROC_REF(remove_quirk),
 	)
 
 /datum/preference_middleware/quirks/get_ui_static_data(mob/user)
@@ -29,8 +29,10 @@
 /datum/preference_middleware/quirks/get_constant_data()
 	var/list/quirk_info = list()
 
-	for (var/quirk_name in SSquirks.quirks)
-		var/datum/quirk/quirk = SSquirks.quirks[quirk_name]
+	var/list/quirks = SSquirks.get_quirks()
+
+	for (var/quirk_name in quirks)
+		var/datum/quirk/quirk = quirks[quirk_name]
 		quirk_info[sanitize_css_class_name(quirk_name)] = list(
 			"description" = initial(quirk.desc),
 			"icon" = initial(quirk.icon),
@@ -59,6 +61,7 @@
 		return TRUE
 
 	preferences.all_quirks = new_quirks
+	preferences.character_preview_view?.update_body()
 
 	return TRUE
 
@@ -77,6 +80,7 @@
 		return TRUE
 
 	preferences.all_quirks = new_quirks
+	preferences.character_preview_view?.update_body()
 
 	return TRUE
 

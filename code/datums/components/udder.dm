@@ -10,15 +10,15 @@
 	var/datum/callback/on_milk_callback
 
 //udder_type and reagent_produced_typepath are typepaths, not reference
-/datum/component/udder/Initialize(udder_type = /obj/item/udder, on_milk_callback, on_generate_callback, reagent_produced_typepath = /datum/reagent/consumable/milk)
+/datum/component/udder/Initialize(udder_type = /obj/item/udder, datum/callback/on_milk_callback, datum/callback/on_generate_callback, reagent_produced_typepath = /datum/reagent/consumable/milk)
 	if(!isliving(parent)) //technically is possible to drop this on carbons... but you wouldn't do that to me, would you?
 		return COMPONENT_INCOMPATIBLE
 	udder = new udder_type(null, parent, on_generate_callback, reagent_produced_typepath)
 	src.on_milk_callback = on_milk_callback
 
 /datum/component/udder/RegisterWithParent()
-	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, .proc/on_examine)
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/on_attackby)
+	RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
+	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 
 /datum/component/udder/UnregisterFromParent()
 	QDEL_NULL(udder)
@@ -47,7 +47,7 @@
 	SIGNAL_HANDLER
 
 	var/mob/living/milked = parent
-	if(milked.stat == CONSCIOUS && istype(milking_tool, /obj/item/reagent_containers/glass))
+	if(milked.stat == CONSCIOUS && istype(milking_tool, /obj/item/reagent_containers/cup))
 		udder.milk(milking_tool, user)
 		if(on_milk_callback)
 			on_milk_callback.Invoke(udder.reagents.total_volume, udder.reagents.maximum_volume)
@@ -108,10 +108,10 @@
  * Proc called from attacking the component parent with the correct item, moves reagents into the glass basically.
  *
  * Arguments:
- * * obj/item/reagent_containers/glass/milk_holder - what we are trying to transfer the reagents to
+ * * obj/item/reagent_containers/cup/milk_holder - what we are trying to transfer the reagents to
  * * mob/user - who is trying to do this
  */
-/obj/item/udder/proc/milk(obj/item/reagent_containers/glass/milk_holder, mob/user)
+/obj/item/udder/proc/milk(obj/item/reagent_containers/cup/milk_holder, mob/user)
 	if(milk_holder.reagents.total_volume >= milk_holder.volume)
 		to_chat(user, span_warning("[milk_holder] is full."))
 		return
@@ -135,7 +135,7 @@
 		return
 	if(udder_mob.gender == FEMALE)
 		START_PROCESSING(SSobj, src)
-	RegisterSignal(udder_mob, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, .proc/on_mob_attacking)
+	RegisterSignal(udder_mob, COMSIG_HOSTILE_PRE_ATTACKINGTARGET, PROC_REF(on_mob_attacking))
 
 /obj/item/udder/gutlunch/process(delta_time)
 	var/mob/living/simple_animal/hostile/asteroid/gutlunch/gutlunch = udder_mob

@@ -23,7 +23,7 @@
 	stored_money += to_add
 	SEND_SIGNAL(src, COMSIG_MONEYBOT_ADD_MONEY, to_add)
 
-/obj/structure/money_bot/Initialize()
+/obj/structure/money_bot/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/shell, list(
 		new /obj/item/circuit_component/money_bot(),
@@ -35,7 +35,7 @@
 		return
 	set_anchored(!anchored)
 	tool.play_tool_sound(src)
-	balloon_alert(user, "You [anchored?"secure":"unsecure"] [src].")
+	balloon_alert(user, anchored ? "secured" : "unsecured")
 	return TRUE
 
 
@@ -103,9 +103,9 @@
 	if(istype(shell, /obj/structure/money_bot))
 		attached_bot = shell
 		total_money.set_output(attached_bot.stored_money)
-		RegisterSignal(shell, COMSIG_PARENT_ATTACKBY, .proc/handle_money_insert)
-		RegisterSignal(shell, COMSIG_MONEYBOT_ADD_MONEY, .proc/handle_money_update)
-		RegisterSignal(parent, COMSIG_CIRCUIT_SET_LOCKED, .proc/on_set_locked)
+		RegisterSignal(shell, COMSIG_PARENT_ATTACKBY, PROC_REF(handle_money_insert))
+		RegisterSignal(shell, COMSIG_MONEYBOT_ADD_MONEY, PROC_REF(handle_money_update))
+		RegisterSignal(parent, COMSIG_CIRCUIT_SET_LOCKED, PROC_REF(on_set_locked))
 		attached_bot.locked = parent.locked
 
 /obj/item/circuit_component/money_bot/unregister_shell(atom/movable/shell)
@@ -149,4 +149,5 @@
  * * new_value - A boolean that determines if the circuit is locked or not.
  **/
 /obj/item/circuit_component/money_bot/proc/on_set_locked(datum/source, new_value)
+	SIGNAL_HANDLER
 	attached_bot.locked = new_value
